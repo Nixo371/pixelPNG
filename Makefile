@@ -20,7 +20,7 @@ $(NAME): $(OBJS)
 	$(AR) rcs lib$@.a $^
 
 test: $(TEST_OBJS)
-	$(CC) $^ -L. -l$(NAME) -o out
+	$(CC) $^ -L. -l$(NAME) -lz -o out
 
 %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $<

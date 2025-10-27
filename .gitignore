@@ -1,5 +1,15 @@
 # Object files
 **/*.o
 
-# Main executable
-pixelPNG
+# Main library
+libpixelpng.a
+
+# Test output
+out
+
+# Any stragglers
+**/*.png
+
+.cache
+compile_commands.json
+
