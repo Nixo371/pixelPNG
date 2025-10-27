@@ -3,8 +3,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#include <zlib.h>
-
 ChunkIHDR* generate_ihdr_chunk(int width, int height, unsigned char bit_depth, int color_type, unsigned char compression_method, unsigned char filter_method, unsigned char interlace_method) {
 	ChunkIHDR* ihdr_chunk = (ChunkIHDR *) malloc(sizeof(ChunkIHDR));
 
@@ -38,8 +36,6 @@ unsigned char get_grayscale_pixel_byte(pixel** pixels, int x, int y, ChunkIHDR* 
 			break;
 		}
 	}
-
-	printf("%d%d%d%d %d%d%d%d\n", byte & 0x80, byte & 0x40, byte & 0x20, byte & 0x10, byte & 0x08, byte & 0x04, byte & 0x02, byte & 0x01);
 
 	return (byte);
 }
