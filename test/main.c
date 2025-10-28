@@ -10,10 +10,10 @@ int main() {
 			int centered_x = x - (width / 2);
 			int centered_y = y - (height / 2);
 			if ((centered_x * centered_x) + (centered_y * centered_y) <= (40 * 40)) {
-				png->pixels[x][y].grayscale = 0;
+				set_pixel_grayscale(png, x, y, 0);
 			}
 			else {
-				png->pixels[x][y].grayscale = 1;
+				set_pixel_grayscale(png, x, y, 1);
 			}
 		}
 	}

@@ -55,12 +55,24 @@ typedef struct {
 	pixel** pixels;
 } pixelPNG;
 
+// PNG
 pixelPNG* initialize_png(int width, int height, unsigned char bit_depth, int color_type, unsigned char compression_method, unsigned char filter_method, unsigned char interlace_method);
 void generate_png(pixelPNG* pixelPNG, char* file_name);
 
+// Pixels
+pixel get_pixel(pixelPNG* pixelPNG, int x, int y);
+void set_pixel(pixelPNG* pixelPNG, int x, int y, unsigned char grayscale, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, unsigned char palette_index);
+void set_pixel_grayscale(pixelPNG* pixelPNG, int x, int y, short int grayscale);
+void set_pixel_grayscale_alpha(pixelPNG* pixelPNG, int x, int y, short int grayscale, short int alpha);
+void set_pixel_rgb(pixelPNG* pixelPNG, int x, int y, short int red, short int green, short int blue);
+void set_pixel_rgba(pixelPNG* pixelPNG, int x, int y, short int red, short int green, short int blue, short int alpha);
+
+
+// Generate Chunk Data
 ChunkIHDR* generate_ihdr_chunk(int width, int height, unsigned char bit_depth, int color_type, unsigned char compression_method, unsigned char filter_method, unsigned char interlace_method);
 ChunkIDAT* generate_idat_chunk(pixel** pixels, ChunkIHDR* ihdr_chunk);
 
+// Write Chunks
 void write_chunk(FILE* file, size_t length, int chunk_type, unsigned char* chunk_data);
 void write_ihdr_chunk(FILE* file, ChunkIHDR* ihdr_chunk);
 void write_idat_chunk(FILE* file, ChunkIDAT* idat_chunk);
