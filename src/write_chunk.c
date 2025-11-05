@@ -63,6 +63,8 @@ void write_chunk(FILE *file, size_t length, int chunk_type, unsigned char *chunk
 	crc_bytes[2] = (crc_data >> 8) & 0xFF;
 	crc_bytes[3] = (crc_data) & 0xFF;
 	fwrite(crc_bytes, 1, 4, file);
+
+	free(full_data);
 }
 
 void write_ihdr_chunk(FILE *file, ChunkIHDR *ihdr_chunk) {
@@ -99,4 +101,6 @@ void write_idat_chunk(FILE *file, ChunkIDAT *idat_chunk) {
 	compress2(comp, &comp_len, idat_chunk->data, idat_chunk->length, Z_BEST_COMPRESSION);
 
 	write_chunk(file, comp_len, IDAT, comp);
+
+	free(comp);
 }
