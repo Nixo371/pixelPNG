@@ -78,7 +78,12 @@ ChunkIDAT* generate_idat_chunk(pixel** pixels, ChunkIHDR* ihdr_chunk) {
 	
 	idat_chunk->length = 0;
 	// Each scan line's first byte is the filter byte, so we reserve maximum possible size (excludint 16 bit size)
-	idat_chunk->data = (unsigned char *) malloc(((width + 1) * height) * sizeof(unsigned char));
+	size_t data_size = ((width / pixels_per_byte) + 1) * height;
+	// If 1-7 extra bits, we need an extra byte
+	if (width % pixels_per_byte != 0) {
+		data_size += height;
+	}
+	idat_chunk->data = (unsigned char *) malloc(data_size * sizeof(unsigned char));
 
 	int y = 0;
 	int x = 0;

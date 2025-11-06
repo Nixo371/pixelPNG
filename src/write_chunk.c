@@ -8,6 +8,11 @@
 #include <zlib.h>
 
 void write_chunk(FILE *file, size_t length, int chunk_type, unsigned char *chunk_data) {
+	if (chunk_data == NULL && length > 0) {
+		fprintf(stderr, "write_chunk: length > 0 when chunk_data == NULL");
+		return;
+	}
+
 	// Length
 	unsigned char length_bytes[4];
 	length_bytes[0] = (length >> 24) & 0xFF;
@@ -41,7 +46,9 @@ void write_chunk(FILE *file, size_t length, int chunk_type, unsigned char *chunk
 	fwrite(chunk_type_str, 1, 4, file);
 
 	// Chunk Data
-	fwrite(chunk_data, 1, length, file);
+	if (chunk_data != NULL) {
+		fwrite(chunk_data, 1, length, file);
+	}
 
 	// CRC
 	unsigned char* full_data = (unsigned char *) malloc((length + 4) * sizeof(unsigned char));
@@ -51,6 +58,10 @@ void write_chunk(FILE *file, size_t length, int chunk_type, unsigned char *chunk
 		index++;
 	}
 	for (size_t i = 0; i < length; i++) {
+		if (chunk_data == NULL) {
+			break;
+		}
+
 		full_data[index] = chunk_data[i];
 		index++;
 	}

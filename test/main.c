@@ -19,4 +19,5 @@ int main() {
 	}
 	
 	generate_png(png, "circle.png");
+	free_png(png);
 }
