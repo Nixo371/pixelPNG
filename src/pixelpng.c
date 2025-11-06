@@ -1,5 +1,6 @@
 #include "pixelpng.h"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,11 +20,21 @@ pixelPNG* initialize_png(int width, int height, unsigned char bit_depth, int col
 }
 
 void generate_png(pixelPNG* pixelPNG, char* file_name) {
-	FILE* file = fopen(file_name, "w");
+	FILE* file = fopen(file_name, "wb");
+	if (file == NULL) {
+		perror("fopen");
+		fprintf(stderr, "Could not open/create the file '%s'\n", file_name);
+		return;
+	}
 
 	// 137 80 78 71 13 10 26 10
 	char png_file_signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
-	fwrite(png_file_signature, 1, 8, file);
+	size_t wrote = fwrite(png_file_signature, 1, 8, file);
+	if (wrote != 8) {
+		perror("fwrite signature");
+		fclose(file);
+		return;
+	}
 
 	write_ihdr_chunk(file, pixelPNG->ihdr_chunk);
 
