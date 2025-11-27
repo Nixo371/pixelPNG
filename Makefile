@@ -1,6 +1,7 @@
 SRCDIRS = src
 TEST_SRCDIRS = test
 INCDIRS = include
+BUILDDIR = build
 
 CC = gcc
 AR = ar
@@ -17,10 +18,10 @@ NAME = pixelpng
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) rcs lib$@.a $^
+	$(AR) rcs $(BUILDDIR)/lib$@.a $^
 
 test: $(TEST_OBJS)
-	$(CC) $^ -L. -l$(NAME) -lz -o out
+	$(CC) $^ -L. -L$(BUILDDIR) -l$(NAME) -lz -o $(BUILDDIR)/test
 
 %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $<
