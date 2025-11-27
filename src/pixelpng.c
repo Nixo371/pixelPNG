@@ -4,12 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-pixelPNG* initialize_png(int width, int height, unsigned char bit_depth, int color_type, unsigned char compression_method, unsigned char filter_method, unsigned char interlace_method) {
+pixelPNG* initialize_png(int width, int height) {
 	pixelPNG* png = (pixelPNG *) malloc(sizeof(pixelPNG));
 	
-	ChunkIHDR* ihdr = generate_ihdr_chunk(width, height, bit_depth, color_type, compression_method, filter_method, interlace_method);
+	// Create with default values since we don't care about them until we actually generate the PNG
+	ChunkIHDR* ihdr = generate_ihdr_chunk(width, height, 1, GRAYSCALE, 0, 0, 0);
 	png->ihdr_chunk = ihdr;
 
+	// TODO calloc?
 	pixel** pixels = (pixel **) malloc(width * sizeof(pixel *));
 	for (int i = 0; i < width; i++) {
 		pixels[i] = (pixel *) malloc(height * sizeof(pixel));
@@ -19,7 +21,7 @@ pixelPNG* initialize_png(int width, int height, unsigned char bit_depth, int col
 	return (png);
 }
 
-void generate_png(pixelPNG* pixelPNG, char* file_name) {
+void generate_png(pixelPNG* pixelPNG, char* file_name, unsigned char bit_depth, int color_type, unsigned char compression_method, unsigned char filter_method, unsigned char interlace_method) {
 	FILE* file = fopen(file_name, "wb");
 	if (file == NULL) {
 		perror("fopen");
@@ -28,7 +30,7 @@ void generate_png(pixelPNG* pixelPNG, char* file_name) {
 	}
 
 	// 137 80 78 71 13 10 26 10
-	char png_file_signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
+	const char png_file_signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
 	size_t wrote = fwrite(png_file_signature, 1, 8, file);
 	if (wrote != 8) {
 		perror("fwrite signature");
@@ -36,6 +38,11 @@ void generate_png(pixelPNG* pixelPNG, char* file_name) {
 		return;
 	}
 
+	pixelPNG->ihdr_chunk->bit_depth = bit_depth;
+	pixelPNG->ihdr_chunk->color_type = color_type;
+	pixelPNG->ihdr_chunk->compression_method = compression_method;
+	pixelPNG->ihdr_chunk->filter_method = filter_method;
+	pixelPNG->ihdr_chunk->interlace_method = interlace_method;
 	write_ihdr_chunk(file, pixelPNG->ihdr_chunk);
 
 	ChunkIDAT* idat_chunk = generate_idat_chunk(pixelPNG->pixels, pixelPNG->ihdr_chunk);

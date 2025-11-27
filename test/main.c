@@ -3,7 +3,7 @@
 int main() {
 	int width = 1000;
 	int height = 1000;
-	pixelPNG* png = initialize_png(width, height, 1, GRAYSCALE, 0, 0, 0);
+	pixelPNG* png = initialize_png(width, height);
 
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
@@ -18,6 +18,6 @@ int main() {
 		}
 	}
 	
-	generate_png(png, "circle.png");
+	generate_png(png, "circle.png", 1, GRAYSCALE, 0, 0, 0);
 	free_png(png);
 }
