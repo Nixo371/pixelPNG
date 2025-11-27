@@ -1,3 +1,6 @@
+#include "chunk.h"
+
+#include "pixel.h"
 #include "pixelpng.h"
 
 #include <stddef.h>

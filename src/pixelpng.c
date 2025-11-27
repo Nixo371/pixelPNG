@@ -1,5 +1,8 @@
 #include "pixelpng.h"
 
+#include "pixel.h"
+#include "chunk.h"
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

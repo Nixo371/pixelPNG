@@ -1,4 +1,5 @@
 #include "pixelpng.h"
+#include "pixel.h"
 
 int main() {
 	int width = 1000;
