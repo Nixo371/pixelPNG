@@ -14,13 +14,17 @@ TEST_SRCS = $(foreach D, $(TEST_SRCDIRS), $(wildcard $(D)/*.c))
 TEST_OBJS = $(patsubst %.c, %.o, $(TEST_SRCS))
 
 NAME = pixelpng
+LIB = $(BUILDDIR)/lib$(NAME).a
 
-all: $(NAME)
+all: $(LIB)
 
-$(NAME): $(OBJS)
-	$(AR) rcs $(BUILDDIR)/lib$@.a $^
+$(LIB): $(OBJS) | $(BUILDDIR)
+	$(AR) rcs $@ $^
 
-test: $(TEST_OBJS)
+$(BUILDDIR):
+	mkdir -p $@
+
+test: $(LIB) $(TEST_OBJS) | $(BUILDDIR)
 	$(CC) $^ -L. -L$(BUILDDIR) -l$(NAME) -lz -o $(BUILDDIR)/test
 
 %.o: %.c
