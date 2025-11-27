@@ -1,15 +1,18 @@
 # Object files
 **/*.o
 
+# Build directory
+build
+
 # Main library
 libpixelpng.a
 
 # Test output
 out
+test
 
 # Any stragglers
 **/*.png
 
 .cache
 compile_commands.json
-
