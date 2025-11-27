@@ -50,9 +50,7 @@ void generate_png(pixelPNG* pixelPNG, char* file_name, unsigned char bit_depth, 
 
 	ChunkIDAT* idat_chunk = generate_idat_chunk(pixelPNG->pixels, pixelPNG->ihdr_chunk);
 	write_idat_chunk(file, idat_chunk);
-	// TODO Make this a function
-	free(idat_chunk->data);
-	free(idat_chunk);
+	free_idat_chunk(idat_chunk);
 
 	write_chunk(file, 0, IEND, NULL);
 

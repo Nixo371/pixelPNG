@@ -39,4 +39,8 @@ void write_chunk(FILE* file, size_t length, int chunk_type, unsigned char* chunk
 void write_ihdr_chunk(FILE* file, ChunkIHDR* ihdr_chunk);
 void write_idat_chunk(FILE* file, ChunkIDAT* idat_chunk);
 
+// Free Chunks
+void free_ihdr_chunk(ChunkIHDR* ihdr_chunk);
+void free_idat_chunk(ChunkIDAT* idat_chunk);
+
 #endif
