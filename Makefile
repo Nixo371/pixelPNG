@@ -24,14 +24,14 @@ $(LIB): $(OBJS) | $(BUILDDIR)
 $(BUILDDIR):
 	mkdir -p $@
 
-test: $(LIB) $(TEST_OBJS) | $(BUILDDIR)
-	$(CC) $^ -L. -L$(BUILDDIR) -l$(NAME) -lz -o $(BUILDDIR)/test
+test: $(TEST_OBJS) $(LIB) | $(BUILDDIR)
+	$(CC) $^ -L. -L$(BUILDDIR) -lz -o $(BUILDDIR)/test
 
 %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $<
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf $(OBJS) $(TEST_OBJS)
 
 fclean: clean
 	rm -rf $(NAME)
