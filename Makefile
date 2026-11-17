@@ -1,5 +1,6 @@
 SRCDIRS = src
 TEST_SRCDIRS = test
+EXAMPLES_SRCDIRS = examples
 INCDIRS = include
 BUILDDIR = build
 
@@ -12,6 +13,9 @@ OBJS = $(patsubst %.c, %.o, $(SRCS))
 
 TEST_SRCS = $(foreach D, $(TEST_SRCDIRS), $(wildcard $(D)/*.c))
 TEST_OBJS = $(patsubst %.c, %.o, $(TEST_SRCS))
+
+EXAMPLES_SRCS = $(foreach D, $(EXAMPLES_SRCDIRS), $(wildcard $(D)/*.c))
+EXAMPLES_OBJS = $(patsubst %.c, %.o, $(EXAMPLES_SRCS))
 
 NAME = pixelpng
 LIB = $(BUILDDIR)/lib$(NAME).a
@@ -26,6 +30,9 @@ $(BUILDDIR):
 
 test: $(TEST_OBJS) $(LIB) | $(BUILDDIR)
 	$(CC) $^ -L. -L$(BUILDDIR) -lz -o $(BUILDDIR)/test
+
+example: $(EXAMPLES_OBJS) $(LIB) | $(BUILDDIR)
+	$(CC) $^ -L. -L$(BUILDDIR) -lz -o $(BUILDDIR)/examples
 
 %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $<

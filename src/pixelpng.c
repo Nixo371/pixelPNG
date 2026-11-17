@@ -14,10 +14,9 @@ pixelPNG* initialize_png(int width, int height) {
 	ChunkIHDR* ihdr = generate_ihdr_chunk(width, height, 1, GRAYSCALE, 0, 0, 0);
 	png->ihdr_chunk = ihdr;
 
-	// TODO calloc?
-	pixel** pixels = (pixel **) malloc(width * sizeof(pixel *));
+	pixel** pixels = (pixel **) calloc(width, sizeof(pixel *));
 	for (int i = 0; i < width; i++) {
-		pixels[i] = (pixel *) malloc(height * sizeof(pixel));
+		pixels[i] = (pixel *) calloc(height, sizeof(pixel));
 	}
 	png->pixels = pixels;
 
