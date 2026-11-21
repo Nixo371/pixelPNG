@@ -1,6 +1,8 @@
 #include "pixel.h"
 #include "pixelpng.h"
 
+#include <stdio.h>
+
 int clamp(int value, int min, int max) {
 	if (value < min) {
 		return (min);
@@ -26,23 +28,15 @@ void set_pixel(pixelPNG* pixelPNG, int x, int y, uint8_t grayscale, uint8_t red,
 }
 
 void set_pixel_grayscale(pixelPNG* pixelPNG, int x, int y, uint8_t grayscale) {
-	grayscale = clamp(grayscale, 0, 255);
-
 	set_pixel(pixelPNG, x, y, grayscale, grayscale, grayscale, grayscale, 255, 0);
 }
 
 void set_pixel_grayscale_alpha(pixelPNG* pixelPNG, int x, int y, uint8_t grayscale, uint8_t alpha) {
-	grayscale = clamp(grayscale, 0, 255);
-	alpha = clamp(alpha, 0, 255);
-
 	set_pixel(pixelPNG, x, y, grayscale, grayscale, grayscale, grayscale, alpha, 0);
 }
 
 void set_pixel_rgb(pixelPNG* pixelPNG, int x, int y, uint8_t red, uint8_t green, uint8_t blue) {
-	red = clamp(red, 0, 255);
-	green = clamp(green, 0, 255);
-	blue = clamp(blue, 0, 255);
-	uint8_t grayscale = (red + green + blue) / 3;
+	uint8_t grayscale = ((int)red + (int)green + (int)blue) / 3;
 
 	set_pixel(pixelPNG, x, y, grayscale, red, green, blue, 255, 0);
 }

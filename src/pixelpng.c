@@ -32,6 +32,7 @@ void generate_png(pixelPNG* pixelPNG, char* file_name, unsigned char bit_depth, 
 	}
 
 	// 137 80 78 71 13 10 26 10
+	// Actually just the necessary "header"
 	const char png_file_signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
 	size_t wrote = fwrite(png_file_signature, 1, 8, file);
 	if (wrote != 8) {
