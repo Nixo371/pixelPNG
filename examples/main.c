@@ -38,8 +38,29 @@ void draw_circle(pixelPNG* png, int x, int y, int radius) {
 void draw_rectangle(pixelPNG* png, int start_x, int start_y, int end_x, int end_y, uint8_t r, uint8_t g, uint8_t b) {
 	for (int y = start_y; y < end_y; y++) {
 		for (int x = start_x; x < end_x; x++) {
-			set_pixel_grayscale(png, x, y, 1);
 			set_pixel_rgb(png, x, y, r, g, b);
+		}
+	}
+}
+
+uint8_t scale_grayscale(uint8_t grayscale, uint8_t bit_depth) {
+	float grayscale_float = (float)grayscale / 255;
+	uint8_t scaling_factor = (1 << bit_depth) - 1;
+
+	uint8_t scaled_grayscale = (uint8_t)(grayscale_float * scaling_factor);
+
+	return (scaled_grayscale);
+}
+
+// grayscale is always 0-255, bit_depth scales it if necessary
+// scaling is done by rounding to the nearest value
+// grayscale 128 with bit_depth 1 would scale down to 1, whereas 127 would scale down to 0
+void draw_rectangle_grayscale(pixelPNG* png, int start_x, int start_y, int end_x, int end_y, uint8_t grayscale, uint8_t bit_depth) {
+	uint8_t scaled_grayscale = scale_grayscale(grayscale, bit_depth);
+
+	for (int y = start_y; y < end_y; y++) {
+		for (int x = start_x; x < end_x; x++) {
+			set_pixel_grayscale(png, x, y, scaled_grayscale);
 		}
 	}
 }
@@ -68,19 +89,23 @@ void example2() {
 
 	draw_background(png, width, height, 0);
 	draw_rectangle(png, 0, 0, width, height, 255, 0, 0);
-
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			pixel p = get_pixel(png, x, y);
-			printf("(%d, %d) - %d\n", x, y, p.grayscale);
-		}
-	}
-
-	generate_png(png, "examples/rectangle_grayscale.png", 1, GRAYSCALE, 0, 0, 0);
-	generate_png(png, "examples/rectangle_grayscale2.png", 2, GRAYSCALE, 0, 0, 0);
-	generate_png(png, "examples/rectangle_grayscale4.png", 4, GRAYSCALE, 0, 0, 0);
-	generate_png(png, "examples/rectangle_grayscale8.png", 8, GRAYSCALE, 0, 0, 0);
 	generate_png(png, "examples/rectangle_rgb.png", 8, RGB, 0, 0, 0);
+
+	draw_background(png, width, height, 0);
+	draw_rectangle_grayscale(png, 0, 0, width, height, 255, 1);
+	generate_png(png, "examples/rectangle_grayscale.png", 1, GRAYSCALE, 0, 0, 0);
+
+	draw_background(png, width, height, 0);
+	draw_rectangle_grayscale(png, 0, 0, width, height, 255, 2);
+	generate_png(png, "examples/rectangle_grayscale2.png", 2, GRAYSCALE, 0, 0, 0);
+
+	draw_background(png, width, height, 0);
+	draw_rectangle_grayscale(png, 0, 0, width, height, 255, 4);
+	generate_png(png, "examples/rectangle_grayscale4.png", 4, GRAYSCALE, 0, 0, 0);
+
+	draw_background(png, width, height, 0);
+	draw_rectangle_grayscale(png, 0, 0, width, height, 255, 8);
+	generate_png(png, "examples/rectangle_grayscale8.png", 8, GRAYSCALE, 0, 0, 0);
 
 	free_png(png);
 }

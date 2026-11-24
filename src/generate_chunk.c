@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 ChunkIHDR* generate_ihdr_chunk(int width, int height, unsigned char bit_depth, int color_type, unsigned char compression_method, unsigned char filter_method, unsigned char interlace_method) {
@@ -134,6 +135,7 @@ ChunkIDAT* generate_idat_chunk(pixel** pixels, ChunkIHDR* ihdr_chunk) {
 
 	size_t pixels_per_byte = 1;
 	int bytes_per_pixel;
+
 	switch (ihdr_chunk->color_type) {
 		case GRAYSCALE:
 			bytes_per_pixel = ihdr_chunk->bit_depth / 8;
